@@ -1,0 +1,41 @@
+# Dependencies and env
+.venv
+venv
+node_modules
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__
+*.py[cod]
+*.egg-info
+.mypy_cache
+.coverage
+htmlcov
+.ruff_cache
+
+# IDE and OS
+.idea
+.vscode
+.DS_Store
+
+# Build and logs
+dist
+build
+*.log
+
+# Terraform
+.terraform
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Optional: keep .env.example committed
+!.env.example
+
+# Execution guide (local progress only; keep checklist private)
+EXECUTION-GUIDE.md
+
+# Cloned template (stripped into backend/; do not commit)
+full-stack-fastapi-template/
