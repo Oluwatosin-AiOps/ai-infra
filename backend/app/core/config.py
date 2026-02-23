@@ -35,5 +35,8 @@ class Settings(BaseSettings):
 
     SENTRY_DSN: HttpUrl | None = None
 
+    # ML model path (relative to backend app root or absolute)
+    MODEL_PATH: str = "app/model/model.joblib"
+
 
 settings = Settings()  # type: ignore
