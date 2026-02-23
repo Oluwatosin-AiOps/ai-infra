@@ -8,10 +8,10 @@ Canonical choices for the Kubernetes-First AI Fraud Detection Platform. No steps
 
 | Component | Technology | Role |
 |-----------|------------|------|
-| **Frontend** | **Next.js** (Node.js) | Lightweight UI: form for transaction input, calls ML API, displays fraud probability. Deployed as its own container and has its own load balancer (microservice boundary). |
+| **Frontend** | **Vite + React** (TypeScript) | Lightweight UI: transaction JSON form, calls ML API via `VITE_API_URL`, displays fraud probability and label. Deployed as its own container and has its own load balancer (microservice boundary). |
 | **Backend (ML API)** | **Python 3.10+ / FastAPI** | Inference service: `POST /predict` plus `/api/v1/utils/health-check/`. Scikit-learn or XGBoost model, joblib-serialized. Deployed as its own container and its own load balancer. |
 
-So: **two backends** — a **Node/Next.js frontend** and a **Python/FastAPI ML backend** — each independently deployable and load-balanced.
+So: **two services** — **Vite + React frontend** and **Python/FastAPI ML backend** — each independently deployable and load-balanced.
 
 ---
 

@@ -1,3 +1,4 @@
+import json
 from typing import Any, Literal
 
 from pydantic import HttpUrl, computed_field
@@ -7,7 +8,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 def parse_cors(v: Any) -> list[str] | str:
     if isinstance(v, str) and not v.startswith("["):
         return [i.strip() for i in v.split(",") if i.strip()]
-    if isinstance(v, list | str):
+    if isinstance(v, list):
+        return v
+    if isinstance(v, str):
         return v
     raise ValueError(v)
 
@@ -29,9 +32,20 @@ class Settings(BaseSettings):
     @computed_field  # type: ignore[prop-decorator]
     @property
     def all_cors_origins(self) -> list[str]:
-        if isinstance(self.BACKEND_CORS_ORIGINS, str):
-            return [x.strip() for x in self.BACKEND_CORS_ORIGINS.split(",") if x.strip()]
-        return list(self.BACKEND_CORS_ORIGINS)
+        raw = self.BACKEND_CORS_ORIGINS
+        if isinstance(raw, list):
+            return [str(x).strip() for x in raw if str(x).strip()]
+        s = raw.strip()
+        if not s:
+            return []
+        # JSON array format from .env e.g. ["http://localhost:5173"]
+        if s.startswith("["):
+            try:
+                parsed = json.loads(s)
+                return [str(x).strip() for x in parsed if str(x).strip()]
+            except json.JSONDecodeError:
+                pass
+        return [x.strip() for x in s.split(",") if x.strip()]
 
     SENTRY_DSN: HttpUrl | None = None
 
